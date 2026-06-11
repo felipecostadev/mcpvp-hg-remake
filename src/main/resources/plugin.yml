@@ -1,0 +1,5 @@
+main: com.mcpvp.HungerGames
+name: HungerGames
+version: 1.21.11-SNAPSHOT
+api-version: 1.21
+load: STARTUP
