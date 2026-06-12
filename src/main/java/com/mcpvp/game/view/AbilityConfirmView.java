@@ -51,6 +51,14 @@ public final class AbilityConfirmView extends View {
         if (!(render.getInitialData() instanceof Ability ability))
             return;
 
+        final var viewKitIconItem = new ItemBuilder(ability.getIconStack())
+                .setName(Components.miniMessage("<italic:false><color:gold>View kit icon</color>"))
+                .build();
+
+        final var kitDescriptionItem = new ItemBuilder(Material.BOOK)
+                .setName(Components.miniMessage("<italic:false><color:yellow>Description</color>"))
+                .build();
+
         final var player = render.getPlayer();
 
         for (var slot = 0; slot < 54; slot++)
@@ -63,6 +71,12 @@ public final class AbilityConfirmView extends View {
                 .onClick(SlotContext::back);
 
         render.slot(1, 9, unavailableNextPageItem)
+                .cancelOnClick();
+
+        render.slot(3, 3, viewKitIconItem)
+                .cancelOnClick();
+
+        render.slot(3, 5, kitDescriptionItem)
                 .cancelOnClick();
 
         render.slot(5, 1, startingItem)

@@ -9,7 +9,7 @@ public enum GameState {
 
     LOADING(),
 
-    STARTING("Starting In ", 300),
+    STARTING("Starting In ", 60),
 
     INVINCIBILITY("Invincible for ", 120),
 
@@ -27,6 +27,10 @@ public enum GameState {
 
     GameState(int timing) {
         this(null, timing);
+    }
+
+    public boolean hasScoreboard() {
+        return this.namespace != null;
     }
 
     public GameState getNextState() {

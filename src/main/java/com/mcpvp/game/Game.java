@@ -15,7 +15,7 @@ public final class Game implements Runnable {
     private String formattedTimeOfClock;
     private String formattedTime;
 
-    private int time;
+    private int time = -1;
 
     private boolean forceStart = false;
 
@@ -34,12 +34,17 @@ public final class Game implements Runnable {
     }
 
     public boolean shouldTrigger() {
-        return this.time % 60 == 0 || this.time == 45 || this.time == 30 || this.time == 15 || this.time == 10 || this.time > 0 && this.time <= 5;
+
+        if (formattedTime == null)
+            return false;
+
+        return this.time > 0 && this.time % 60 == 0 || this.time == 30 || this.time == 15 || this.time == 10 || this.time > 0 && this.time <= 5;
     }
 
     public void updateState() {
         this.state = state.getNextState();
         this.time = state.getTiming();
+        this.formattedTime = null;
     }
 
     public void updateTime() {
@@ -71,6 +76,22 @@ public final class Game implements Runnable {
 
             case STARTING -> {
 
+                if (shouldEndState()) {
+                    updateState();
+                    broadcast("<color:red>The Tournament has begun!</color>");
+                    broadcast("<color:red>There are {0} players participating.</color>");
+                    broadcast("<color:red>Everyone is invincible for 2 minutes.</color>");
+                    broadcast("<color:red>Good Luck!</color>");
+                    return;
+                }
+
+                decreaseTime();
+                updateTime();
+
+            }
+
+            case INVINCIBILITY -> {
+
                 if (shouldTrigger()) {
                     broadcast("<color:red>Invincibility wears off in " + formattedTime + ".</color>");
                 } else if (shouldEndState()) {
@@ -82,11 +103,6 @@ public final class Game implements Runnable {
                 decreaseTime();
                 updateTime();
 
-            }
-
-            case INVINCIBILITY -> {
-                decreaseTime();
-                updateTime();
             }
 
             case MIDDLE_GAME -> {

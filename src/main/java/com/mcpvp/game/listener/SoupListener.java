@@ -41,6 +41,9 @@ public final class SoupListener implements Listener {
         final var health = player.getHealth();
         final var maxHealth = attribute != null ? attribute.getValue() : 20.0D;
 
+        final var food = player.getFoodLevel();
+        final var maxFood = 20;
+
         var changeItemInMainHand = false;
 
         if (health < maxHealth) {
@@ -54,17 +57,12 @@ public final class SoupListener implements Listener {
 
             changeItemInMainHand = true;
 
-        }
+        } else if (food < maxFood) {
 
-        final var foodLevel = player.getFoodLevel();
-        final var maxFoodLevel = 20;
+            var satiate = food + 7;
 
-        if (foodLevel < maxFoodLevel) {
-
-            var satiate = foodLevel + 7;
-
-            if (satiate > maxFoodLevel)
-                satiate = maxFoodLevel;
+            if (satiate > maxFood)
+                satiate = maxFood;
 
             player.setFoodLevel(satiate);
             player.setSaturation(satiate);
