@@ -4,6 +4,7 @@ import com.mcpvp.core.util.Components;
 import com.mcpvp.core.util.ItemBuilder;
 import com.mcpvp.game.ability.Ability;
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import me.devnatan.inventoryframework.View;
 import me.devnatan.inventoryframework.context.OpenContext;
 import me.devnatan.inventoryframework.context.RenderContext;
@@ -52,6 +53,7 @@ public final class AbilityConfirmView extends View {
             return;
 
         final var viewKitIconItem = new ItemBuilder(ability.getIconStack())
+                .setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().addHiddenComponents(DataComponentTypes.POTION_CONTENTS, DataComponentTypes.FIREWORKS, DataComponentTypes.ATTRIBUTE_MODIFIERS).build())
                 .setName(Components.miniMessage("<italic:false><color:gold>View kit icon</color>"))
                 .build();
 

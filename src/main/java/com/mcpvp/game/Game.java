@@ -79,7 +79,7 @@ public final class Game implements Runnable {
                 if (shouldEndState()) {
                     updateState();
                     broadcast("<color:red>The Tournament has begun!</color>");
-                    broadcast("<color:red>There are {0} players participating.</color>");
+                    broadcast("<color:red>There are " + gameManager.getPlayers().size() + " players participating.</color>");
                     broadcast("<color:red>Everyone is invincible for 2 minutes.</color>");
                     broadcast("<color:red>Good Luck!</color>");
                     return;

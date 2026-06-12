@@ -4,16 +4,22 @@ import com.mcpvp.HungerGames;
 import com.mcpvp.core.util.Components;
 import com.mcpvp.core.util.ItemBuilder;
 import com.mcpvp.player.user.User;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapelessRecipe;
 
+import java.util.UUID;
+
 @Getter
 public final class GameManager {
 
     private final Game game;
+
+    private final ObjectArrayList<UUID> players = new ObjectArrayList<>();
+    private final ObjectArrayList<UUID> spectators = new ObjectArrayList<>();
 
     public GameManager(HungerGames plugin) {
         plugin.syncTimer(this.game = new Game(this), 20L, 20L);

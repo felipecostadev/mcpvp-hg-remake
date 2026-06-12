@@ -25,8 +25,6 @@ public final class User {
 
     private Ability ability;
 
-    private UserState state;
-
     private boolean scoreboardInitialized = false;
 
     public User(UUID uniqueId) {

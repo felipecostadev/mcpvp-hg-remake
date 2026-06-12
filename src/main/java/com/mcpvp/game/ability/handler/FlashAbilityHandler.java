@@ -10,6 +10,9 @@ public final class FlashAbilityHandler extends Ability {
     public FlashAbilityHandler() {
         setName("Flash");
         setIconStack(ItemStack.of(Material.REDSTONE_TORCH));
+        setItemStacks(new ItemStack[] {
+                ItemStack.of(Material.REDSTONE_TORCH)
+        });
         setSummary(ObjectList.of("Instantly teleport to the location", "you're looking at"));
     }
 
