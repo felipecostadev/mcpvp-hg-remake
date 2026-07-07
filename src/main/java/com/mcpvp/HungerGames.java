@@ -101,7 +101,7 @@ public final class HungerGames extends JavaPlugin {
 
         viewFramework = ViewFrame.create(this).with(new AbilityView(), new AbilityConfirmView()).register();
 
-        registerEvents(new BlockListener(), new WorldListener(), new CompassListener(), new GameSessionListener(), new PlayerSessionListener(), new NatureListener(), new SoupListener());
+        registerEvents(new BlockListener(), new WorldListener(), new CompassListener(), new GameInventoryListener(), new GameSessionListener(), new PlayerSessionListener(), new NatureListener(), new SoupListener());
 
         registerPackets(packetEventsAPI, new PacketHolder(new PacketPlayerRecipeBookCloseListener(), PacketListenerPriority.NORMAL));
 

@@ -5,9 +5,7 @@ import io.papermc.paper.datacomponent.DataComponentType.Valued;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BlocksAttacks;
 import io.papermc.paper.datacomponent.item.blocksattacks.DamageReduction;
-import io.papermc.paper.datacomponent.item.blocksattacks.ItemDamageFunction;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -62,17 +60,9 @@ public final class ItemBuilder {
         return modifyItem(item -> {
 
             final var blocksAttacks = BlocksAttacks.blocksAttacks()
-                    .disableCooldownScale(0.0F)
                     .addDamageReduction(DamageReduction.damageReduction()
-                            .base(-0.5F)
                             .factor(0.5F)
                             .build())
-                    .itemDamage(ItemDamageFunction.itemDamageFunction()
-                            .threshold(0.0F)
-                            .base(0.0F)
-                            .factor(0.0F)
-                            .build())
-                    .blockSound(Key.key(Key.MINECRAFT_NAMESPACE, "entity.player.hurt"))
                     .build();
 
             item.setData(DataComponentTypes.BLOCKS_ATTACKS, blocksAttacks);
