@@ -11,7 +11,6 @@ import com.mcpvp.core.util.Components;
 import com.mcpvp.game.Game;
 import com.mcpvp.game.ability.Ability;
 import lombok.Data;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -31,7 +30,7 @@ public final class User {
         this.uniqueId = uniqueId;
     }
 
-    public void updateScoreboard(PlayerManager packetManager, Game game) {
+    public void updateScoreboard(PlayerManager packetManager, int playerCount, Game game) {
 
         final var entry = player.getUniqueId().toString();
         final var state = game.getState();
@@ -56,11 +55,10 @@ public final class User {
 
             }
 
-            final var score = Bukkit.getOnlinePlayers().size();
             final var text = Components.of("Player Count");
 
             final var wrapperPlayServerDisplayScoreboard = new WrapperPlayServerDisplayScoreboard(1, entry);
-            final var wrapperPlayServerUpdateScore = new WrapperPlayServerUpdateScore("sb", Action.CREATE_OR_UPDATE_ITEM, entry, score, text, null);
+            final var wrapperPlayServerUpdateScore = new WrapperPlayServerUpdateScore("sb", Action.CREATE_OR_UPDATE_ITEM, entry, playerCount, text, null);
 
             packetManager.sendPacket(player, wrapperPlayServerDisplayScoreboard);
             packetManager.sendPacket(player, wrapperPlayServerUpdateScore);

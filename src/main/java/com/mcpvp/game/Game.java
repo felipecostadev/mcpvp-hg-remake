@@ -3,7 +3,9 @@ package com.mcpvp.game;
 import com.mcpvp.core.util.Components;
 import com.mcpvp.core.util.Converter;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 @Getter
 public final class Game implements Runnable {
@@ -11,6 +13,9 @@ public final class Game implements Runnable {
     private final GameManager gameManager;
 
     private GameState state = GameState.LOADING;
+
+    @Setter
+    private Location spawnLocation;
 
     private String formattedTimeOfClock;
     private String formattedTime;
@@ -21,8 +26,6 @@ public final class Game implements Runnable {
 
     public Game(GameManager gameManager) {
         this.gameManager = gameManager;
-
-        updateState();
     }
 
     public boolean hasState(GameState gameState) {
@@ -33,7 +36,7 @@ public final class Game implements Runnable {
         return this.time == 0;
     }
 
-    public boolean shouldTrigger() {
+    public boolean shouldAnnounce() {
 
         if (formattedTime == null)
             return false;
@@ -74,6 +77,14 @@ public final class Game implements Runnable {
 
         switch (state) {
 
+            case LOADING -> {
+
+                this.spawnLocation = new Location(Bukkit.getWorlds().getFirst(), 0.5D, 65, 0.5D);
+
+                updateState();
+
+            }
+
             case STARTING -> {
 
                 if (shouldEndState()) {
@@ -92,7 +103,7 @@ public final class Game implements Runnable {
 
             case INVINCIBILITY -> {
 
-                if (shouldTrigger()) {
+                if (shouldAnnounce()) {
                     broadcast("<color:red>Invincibility wears off in " + formattedTime + ".</color>");
                 } else if (shouldEndState()) {
                     updateState();

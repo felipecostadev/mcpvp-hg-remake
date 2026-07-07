@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapelessRecipe;
 
@@ -27,7 +28,54 @@ public final class GameManager {
         registerRecipes(plugin);
     }
 
+    public boolean isPlayer(Player player) {
+        return players.contains(player.getUniqueId());
+    }
+
+    public boolean isSpectator(Player player) {
+        return spectators.contains(player.getUniqueId());
+    }
+
+    public void joinPlayer(Player player, User user, Game game) {
+
+        switch (game.getState()) {
+
+            case STARTING -> {
+
+                players.add(player.getUniqueId());
+
+                reloadPlayer(player);
+
+                player.teleport(game.getSpawnLocation());
+
+                user.setPlayer(player);
+
+            }
+
+        }
+
+    }
+
+    public void joinSpectator() {
+
+    }
+
     public void respawnPlayer(Player player, User user) {
+
+    }
+
+    private void reloadPlayer(Player player) {
+
+        final var inventory = player.getInventory();
+        inventory.setHeldItemSlot(0);
+        inventory.clear();
+
+        final var attribute = player.getAttribute(Attribute.ATTACK_SPEED);
+
+        if (attribute != null)
+            attribute.setBaseValue(1024.0D);
+
+        player.setCooldown(Material.ENDER_PEARL, 0);
 
     }
 

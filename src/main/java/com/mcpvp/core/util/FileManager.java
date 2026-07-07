@@ -1,44 +1,81 @@
 package com.mcpvp.core.util;
 
-import java.io.File;
+import org.jspecify.annotations.NonNull;
+
 import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 
 public final class FileManager {
 
-    public static void deleteKeeping(File folder, String target) throws IOException {
-        
-        final var files = folder.listFiles();
+    public static void copy(Path source, Path target) throws IOException {
 
-        if (files == null)
-            return;
+        Files.walkFileTree(source, new SimpleFileVisitor<>() {
 
-        for (final var file : files) {
+            @NonNull
+            @Override
+            public FileVisitResult preVisitDirectory(@NonNull Path pth, @NonNull BasicFileAttributes attrs) throws IOException {
 
-            if (file.getName().equalsIgnoreCase(target))
-                continue;
+                final var targetDir = target.resolve(source.relativize(pth));
 
-            delete(file);
-        }
-        
-    }
+                Files.createDirectories(targetDir);
 
-    private static void delete(File file) throws IOException {
-
-        if (file.isDirectory()) {
-
-            final var children = file.listFiles();
-
-            if (children != null) {
-
-                for (final var child : children)
-                    delete(child);
-
+                return FileVisitResult.CONTINUE;
             }
 
-        }
+            @NonNull
+            @Override
+            public FileVisitResult visitFile(@NonNull Path pth, @NonNull BasicFileAttributes attrs) throws IOException {
 
-        if (!file.delete())
-            throw new IOException("Failed to delete: " + file.getAbsolutePath());
+                final var targetFile = target.resolve(source.relativize(pth));
+
+                Files.copy(pth, targetFile, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
+
+                return FileVisitResult.CONTINUE;
+            }
+
+            @NonNull
+            @Override
+            public FileVisitResult visitFileFailed(@NonNull Path pth, @NonNull IOException e) throws IOException {
+                throw e;
+            }
+
+        });
+
+    }
+
+    public static void delete(Path path) throws IOException {
+
+        Files.walkFileTree(path, new SimpleFileVisitor<>() {
+
+            @NonNull
+            @Override
+            public FileVisitResult visitFile(@NonNull Path pth, @NonNull BasicFileAttributes attrs) throws IOException {
+
+                Files.delete(pth);
+
+                return FileVisitResult.CONTINUE;
+            }
+
+            @NonNull
+            @Override
+            public FileVisitResult visitFileFailed(@NonNull Path pth, @NonNull IOException e) throws IOException {
+                throw e;
+            }
+
+            @NonNull
+            @Override
+            public FileVisitResult postVisitDirectory(@NonNull Path pth, IOException e) throws IOException {
+
+                if (e != null)
+                    throw e;
+
+                Files.delete(pth);
+
+                return FileVisitResult.CONTINUE;
+            }
+
+        });
 
     }
     

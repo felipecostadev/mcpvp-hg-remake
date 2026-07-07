@@ -15,6 +15,8 @@ public record UserHandler(UserService userService, GameManager gameManager) impl
 
         final var playerManager = PacketEvents.getAPI().getPlayerManager();
 
+        final var playerCount = gameManager.getPlayers().size();
+
         for (final var user : userService.getUsers()) {
 
             if (user == null)
@@ -25,7 +27,7 @@ public record UserHandler(UserService userService, GameManager gameManager) impl
             if (player == null)
                 continue;
 
-            user.updateScoreboard(playerManager, game);
+            user.updateScoreboard(playerManager, playerCount, game);
 
         }
 
